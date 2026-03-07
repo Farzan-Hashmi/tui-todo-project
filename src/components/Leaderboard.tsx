@@ -18,7 +18,7 @@ export function Leaderboard() {
         .finally(() => setLoading(false));
 
     fetchLeaderboard();
-    const id = setInterval(fetchLeaderboard, 3000);
+    const id = setInterval(fetchLeaderboard, 750);
     return () => clearInterval(id);
   }, []);
 
