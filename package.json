@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run --watch src/index.tsx"
+    "dev": "bun run --watch src/index.tsx",
+    "build": "bun build --compile src/index.tsx --outfile tuitodo",
+    "build:mac-arm": "bun build --compile --target=bun-darwin-arm64 src/index.tsx --outfile tuitodo-mac-arm64"
   },
   "devDependencies": {
     "@types/bun": "latest"
