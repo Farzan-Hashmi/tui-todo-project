@@ -41,10 +41,20 @@ export function Leaderboard() {
       </text>
       <text fg="#444444">{"─".repeat(maxNameLen + 12)}</text>
       {entries.map((entry, i) => {
+        const isDnf = entry.wpm === -1;
         const rank = String(i + 1).padStart(2);
-        const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "  ";
-        const nameColor =
-          i === 0
+        const medal = isDnf
+          ? "  "
+          : i === 0
+            ? "🥇"
+            : i === 1
+              ? "🥈"
+              : i === 2
+                ? "🥉"
+                : "  ";
+        const nameColor = isDnf
+          ? "#888888"
+          : i === 0
             ? "#FFD700"
             : i === 1
               ? "#C0C0C0"
@@ -56,7 +66,9 @@ export function Leaderboard() {
             <span fg="#888888">{rank} </span>
             <span>{medal} </span>
             <span fg={nameColor}>{entry.username.padEnd(maxNameLen + 2)}</span>
-            <span fg="#00FF88">{String(entry.wpm)}</span>
+            <span fg={isDnf ? "#FF4444" : "#00FF88"}>
+              {isDnf ? "DNF" : String(entry.wpm)}
+            </span>
           </text>
         );
       })}

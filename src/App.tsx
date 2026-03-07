@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { PLACEHOLDER_TEXT } from "./constants";
 import { useTypingTest } from "./hooks/useTypingTest";
 import { TypingTestDisplay } from "./components/TypingTestDisplay";
 import { UsernameDisplay } from "./components/UsernameDisplay";
 import {
   getLeaderboard,
   getTodaySentence,
+  registerAttempt,
   submitResults,
 } from "./services/api";
 import { getUserDeviceKey } from "./services/userId";
@@ -22,6 +22,8 @@ export function App() {
   const [userDeviceKey, setUserDeviceKey] = useState("");
   const [todaySentence, setTodaySentence] = useState("");
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
+  const [attemptRegistered, setAttemptRegistered] = useState(false);
+
   useEffect(() => {
     const key = getUserDeviceKey();
     setUserDeviceKey(key);
@@ -39,9 +41,20 @@ export function App() {
 
   const { username, finishedSettingUsername } = useUsernameDisplay();
 
+  useEffect(() => {
+    if (!finishedSettingUsername || alreadySubmitted) return;
+    registerAttempt(username, userDeviceKey).then((res) => {
+      if (res.ok) {
+        setAttemptRegistered(true);
+      } else {
+        setAlreadySubmitted(true);
+      }
+    });
+  }, [finishedSettingUsername]);
+
   const { textUserTyped, wpm, isUserDoneTyping } = useTypingTest({
     targetText: todaySentence,
-    enabled: finishedSettingUsername && !alreadySubmitted,
+    enabled: attemptRegistered && !alreadySubmitted,
     onComplete: (wpm: number) => {
       submitResults(username, userDeviceKey, wpm).catch(console.error);
     },
@@ -49,7 +62,7 @@ export function App() {
 
   const showLeaderboard = alreadySubmitted || isUserDoneTyping;
   const showUsernamePrompt = !showLeaderboard && !finishedSettingUsername;
-  const showTypingTest = !showLeaderboard && finishedSettingUsername;
+  const showTypingTest = !showLeaderboard && attemptRegistered;
 
   return (
     <box flexDirection="column" gap={1} paddingX={2} paddingY={1}>

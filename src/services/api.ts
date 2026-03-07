@@ -1,10 +1,24 @@
+const API_BASE = "https://tui-todo-backend-production.up.railway.app";
+
+export async function registerAttempt(
+  username: string,
+  userDeviceKey: string,
+) {
+  const response = await fetch(`${API_BASE}/register-attempt`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, userDeviceKey }),
+  });
+  return response;
+}
+
 export async function submitResults(
   username: string,
   userDeviceKey: string,
   wpm: number,
 ) {
   await fetch(
-    "https://tui-todo-backend-production.up.railway.app/submit-results",
+    `${API_BASE}/submit-results`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -19,15 +33,11 @@ export async function submitResults(
 }
 
 export async function getTodaySentence() {
-  const response = await fetch(
-    "https://tui-todo-backend-production.up.railway.app/today-sentence",
-  );
+  const response = await fetch(`${API_BASE}/today-sentence`);
   return response.json();
 }
 
 export async function getLeaderboard() {
-  const response = await fetch(
-    "https://tui-todo-backend-production.up.railway.app/leaderboard",
-  );
+  const response = await fetch(`${API_BASE}/leaderboard`);
   return response.json();
 }
