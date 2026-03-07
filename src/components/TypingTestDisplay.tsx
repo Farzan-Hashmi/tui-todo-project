@@ -10,6 +10,13 @@ export function TypingTestDisplay({
   const displayText = truthText.split("").map((char, i) => {
     if (i < userTypedText.length) {
       const isCorrect = userTypedText[i] === char;
+      if (!isCorrect && char === " ") {
+        return (
+          <span key={i} bg="#FF4444">
+            {" "}
+          </span>
+        );
+      }
       return (
         <span key={i} fg={isCorrect ? "#22CC22" : "#FF4444"}>
           {truthText[i]}
