@@ -40,7 +40,7 @@ bun.lock
 skills-lock.json
 
 # compiled binaries
-tuitodo
-tuitodo-*
+monkeytui
+monkeytui-*
 
 .agents
