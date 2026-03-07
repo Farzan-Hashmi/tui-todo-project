@@ -26,7 +26,11 @@ export function App() {
     const key = getUserDeviceKey();
     setUserDeviceKey(key);
     getTodaySentence().then((data) => {
-      setTodaySentence(data.sentence);
+      const normalized = data.sentence
+        .replace(/[\u00A0\u200B\u200C\u200D\uFEFF]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      setTodaySentence(normalized);
     });
     getLeaderboard().then((data: LeaderboardEntry[]) => {
       setAlreadySubmitted(data.some((entry) => entry.userDeviceKey === key));
