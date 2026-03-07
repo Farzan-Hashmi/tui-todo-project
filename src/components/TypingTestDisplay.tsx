@@ -10,9 +10,14 @@ export function TypingTestDisplay({
   const displayText = truthText.split("").map((char, i) => {
     if (i < userTypedText.length) {
       const isCorrect = userTypedText[i] === char;
+      const isIncorrectSpace = !isCorrect && char === " ";
       return (
-        <span key={i} fg={isCorrect ? "#22CC22" : "#FF4444"}>
-          {truthText[i]}
+        <span
+          key={i}
+          fg={isIncorrectSpace ? "#FFFFFF" : isCorrect ? "#22CC22" : "#FF4444"}
+          bg={isIncorrectSpace ? "#FF4444" : undefined}
+        >
+          {char}
         </span>
       );
     }
